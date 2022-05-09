@@ -5,7 +5,7 @@ use std::path::PathBuf;
 use anyhow::Ok;
 use diesel::query_builder::InsertStatement;
 use diesel::query_dsl::methods;
-use diesel::{Connection, Insertable, RunQueryDsl, SqliteConnection};
+use diesel::{Connection, Insertable, QueryDsl, RunQueryDsl, SqliteConnection};
 use futures::TryFutureExt;
 use itertools::Itertools;
 use serde::de::DeserializeOwned;
@@ -102,6 +102,30 @@ fn load_dataset_to_sqlite() -> anyhow::Result<()> {
     Ok(())
 }
 
+macro_rules! check_table_count {
+    ($table_name:ident, $target_count:expr, $conn:expr) => {
+        let count = schema::$table_name::table.count().first::<i64>($conn)?;
+        anyhow::ensure!(
+            count == $target_count,
+            "Table {} should have {} rows. (Actual count: {})",
+            stringify!($table_name),
+            $target_count,
+            count
+        )
+    };
+}
+
+fn assert_db_contents() -> anyhow::Result<()> {
+    let mut conn = SqliteConnection::establish(sqlite_file_path().to_str().unwrap())?;
+
+    check_table_count!(movies, 9742, &mut conn);
+    check_table_count!(ratings, 100836, &mut conn);
+    check_table_count!(tags, 3683, &mut conn);
+    check_table_count!(links, 9742, &mut conn);
+
+    Ok(())
+}
+
 fn clear_resources_dir() -> anyhow::Result<()> {
     if zip_file_path().exists() {
         std::fs::remove_file(zip_file_path())?;
@@ -119,17 +143,16 @@ fn clear_resources_dir() -> anyhow::Result<()> {
 pub async fn prepare() -> anyhow::Result<()> {
     let mut res = Ok(());
     if !zip_file_path().exists() {
-        let zip_res = download_movielens().await;
-        res = res.and(zip_res);
+        res = res.and(download_movielens().await);
     }
     if !data_dir_path().exists() {
-        let unzip_res = unzip_movielens().await;
-        res = res.and(unzip_res);
+        res = res.and(unzip_movielens().await);
     }
     if !sqlite_file_path().exists() {
-        let sqlite_res = load_dataset_to_sqlite();
-        res = res.and(sqlite_res);
+        res = res.and(load_dataset_to_sqlite());
     }
+    res = res.and(assert_db_contents());
+
     if res.is_err() {
         clear_resources_dir()?;
     }
