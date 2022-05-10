@@ -3,15 +3,12 @@ use std::io::{self, Cursor};
 use std::path::PathBuf;
 
 use anyhow::Ok;
-use diesel::query_builder::InsertStatement;
-use diesel::query_dsl::methods;
 use diesel::{Connection, Insertable, QueryDsl, RunQueryDsl, SqliteConnection};
 use futures::TryFutureExt;
 use itertools::Itertools;
-use serde::de::DeserializeOwned;
 use zip::ZipArchive;
 
-use crate::models::{Link, Movie, Rating, Tag};
+use crate::models::{Link, Movie, RatingEntry, TagEntry};
 use crate::schema;
 
 const DATASET_URL: &str = "http://files.grouplens.org/datasets/movielens/ml-latest-small.zip";
@@ -58,46 +55,28 @@ async fn unzip_movielens() -> anyhow::Result<()> {
     Ok(())
 }
 
-fn insert_csv_into_table<M, T>(
-    path: PathBuf,
-    table: T,
-    conn: &mut SqliteConnection,
-) -> anyhow::Result<()>
-where
-    M: DeserializeOwned,
-    Vec<M>: Insertable<T>,
-    InsertStatement<T, <Vec<M> as Insertable<T>>::Values>: methods::ExecuteDsl<SqliteConnection>,
-{
-    let mut reader = csv::Reader::from_path(path)?;
-    let models: Vec<M> = reader.deserialize::<M>().into_iter().try_collect()?;
-    models.insert_into(table).execute(conn)?;
-    Ok(())
+macro_rules! insert_csv_into_table {
+    ($table_name:ident, $model_type:ty, $conn:expr) => {
+        let csv_name = format!("{}.csv", stringify!($table_name));
+        let mut reader = csv::Reader::from_path(data_dir_path().join(csv_name))?;
+        let models: Vec<$model_type> = reader
+            .deserialize::<$model_type>()
+            .into_iter()
+            .try_collect()?;
+        models
+            .insert_into(crate::schema::$table_name::table)
+            .execute($conn)?;
+    };
 }
 
 fn load_dataset_to_sqlite() -> anyhow::Result<()> {
     let mut conn = SqliteConnection::establish(sqlite_file_path().to_str().unwrap())?;
     diesel_migrations::run_pending_migrations(&mut conn)?;
 
-    insert_csv_into_table::<Movie, _>(
-        data_dir_path().join("movies.csv"),
-        schema::movies::table,
-        &mut conn,
-    )?;
-    insert_csv_into_table::<Rating, _>(
-        data_dir_path().join("ratings.csv"),
-        schema::ratings::table,
-        &mut conn,
-    )?;
-    insert_csv_into_table::<Tag, _>(
-        data_dir_path().join("tags.csv"),
-        schema::tags::table,
-        &mut conn,
-    )?;
-    insert_csv_into_table::<Link, _>(
-        data_dir_path().join("links.csv"),
-        schema::links::table,
-        &mut conn,
-    )?;
+    insert_csv_into_table!(movies, Movie, &mut conn);
+    insert_csv_into_table!(ratings, RatingEntry, &mut conn);
+    insert_csv_into_table!(tags, TagEntry, &mut conn);
+    insert_csv_into_table!(links, Link, &mut conn);
 
     Ok(())
 }
