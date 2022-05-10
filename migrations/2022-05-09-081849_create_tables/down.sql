@@ -3,6 +3,6 @@ DROP TABLE movies;
 
 DROP TABLE ratings;
 
-DROP TABLE tag;
+DROP TABLE tags;
 
 DROP TABLE links;
