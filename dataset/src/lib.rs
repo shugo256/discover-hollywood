@@ -4,12 +4,10 @@ use std::path::PathBuf;
 
 use anyhow::Ok;
 use diesel::{Connection, Insertable, QueryDsl, RunQueryDsl, SqliteConnection};
+use discover_hollywood_models::{Link, Movie, RatingEntry, TagEntry};
 use futures::TryFutureExt;
 use itertools::Itertools;
 use zip::ZipArchive;
-
-use crate::models::{Link, Movie, RatingEntry, TagEntry};
-use crate::schema;
 
 const DATASET_URL: &str = "http://files.grouplens.org/datasets/movielens/ml-latest-small.zip";
 const RESOURCES_DIR_NAME: &str = "resources";
@@ -64,7 +62,7 @@ macro_rules! insert_csv_into_table {
             .into_iter()
             .try_collect()?;
         models
-            .insert_into(crate::schema::$table_name::table)
+            .insert_into(discover_hollywood_models::schema::$table_name::table)
             .execute($conn)?;
     };
 }
@@ -83,7 +81,9 @@ fn load_dataset_to_sqlite() -> anyhow::Result<()> {
 
 macro_rules! check_table_count {
     ($table_name:ident, $target_count:expr, $conn:expr) => {
-        let count = schema::$table_name::table.count().first::<i64>($conn)?;
+        let count = discover_hollywood_models::schema::$table_name::table
+            .count()
+            .first::<i64>($conn)?;
         anyhow::ensure!(
             count == $target_count,
             "Table {} should have {} rows. (Actual count: {})",

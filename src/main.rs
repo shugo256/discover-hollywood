@@ -1,7 +1,5 @@
-use discover_hollywood::dataset;
-
 #[actix_web::main]
 async fn main() -> anyhow::Result<()> {
-    dataset::prepare().await?;
+    discover_hollywood_dataset::prepare().await?;
     Ok(())
 }

@@ -1,0 +1,11 @@
+[package]
+name = "discover-hollywood-models"
+version = "0.1.0"
+edition = "2021"
+description = "Domain models and Diesel schema definitions of the application."
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+diesel = { version = "1.4.8", features = ["sqlite"] }
+serde = { version = "1.0.137", features = ["derive"] }
