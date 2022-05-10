@@ -29,9 +29,14 @@ table! {
         id -> Nullable<Integer>,
         user_id -> Text,
         movie_id -> Text,
-        name -> Text,
+        tag -> Text,
         timestamp -> Integer,
     }
 }
 
-allow_tables_to_appear_in_same_query!(links, movies, ratings, tags,);
+allow_tables_to_appear_in_same_query!(
+    links,
+    movies,
+    ratings,
+    tags,
+);

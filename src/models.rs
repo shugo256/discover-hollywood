@@ -19,7 +19,8 @@ pub struct Movie {
 ///
 /// Corresponds to each row of rating.csv in the [Movielens Dataset](https://grouplens.org/datasets/movielens/).
 #[derive(Clone, Debug, Deserialize, Queryable, Insertable)]
-pub struct Rating {
+#[table_name = "ratings"]
+pub struct RatingEntry {
     #[serde(rename(deserialize = "userId"))]
     pub user_id: String,
     #[serde(rename(deserialize = "movieId"))]
@@ -34,13 +35,13 @@ pub struct Rating {
 ///
 /// Corresponds to each row of tags.csv in the [Movielens Dataset](https://grouplens.org/datasets/movielens/).
 #[derive(Clone, Debug, Deserialize, Queryable, Insertable)]
-pub struct Tag {
+#[table_name = "tags"]
+pub struct TagEntry {
     #[serde(rename(deserialize = "userId"))]
     pub user_id: String,
     #[serde(rename(deserialize = "movieId"))]
     pub movie_id: String,
-    #[serde(rename(deserialize = "tag"))]
-    pub name: String,
+    pub tag: String,
     /// Seconds since midnight Coordinated Universal Time (UTC) of January 1, 1970.
     pub timestamp: i32,
 }

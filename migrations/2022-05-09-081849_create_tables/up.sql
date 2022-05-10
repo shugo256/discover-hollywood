@@ -17,7 +17,7 @@ CREATE TABLE tags (
     `id` INTEGER PRIMARY KEY AUTOINCREMENT,
     `user_id` VARCHAR(10) NOT NULL,
     `movie_id` VARCHAR(10) NOT NULL,
-    `name` VARCHAR(10) NOT NULL,
+    `tag` VARCHAR(10) NOT NULL,
     `timestamp` INTEGER NOT NULL
 );
 
