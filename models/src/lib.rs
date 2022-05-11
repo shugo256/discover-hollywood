@@ -6,13 +6,13 @@ pub mod schema;
 
 use diesel::{Insertable, Queryable};
 use schema::*;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 /// Movie Information
 ///
 /// Corresponds to each row of movies.csv in the [Movielens Dataset](https://grouplens.org/datasets/movielens/).
 /// Only movies with at least one rating or tag are included in the dataset. These movie ids are consistent with those used on the MovieLens web site (e.g., id `1` corresponds to the URL <https://movielens.org/movies/1>).
-#[derive(Clone, Debug, Deserialize, Queryable, Insertable)]
+#[derive(Clone, Debug, Serialize, Deserialize, Queryable, Insertable)]
 pub struct Movie {
     #[serde(rename(deserialize = "movieId"))]
     pub id: String,
@@ -24,7 +24,7 @@ pub struct Movie {
 /// Rating of one movie by one user.
 ///
 /// Corresponds to each row of rating.csv in the [Movielens Dataset](https://grouplens.org/datasets/movielens/).
-#[derive(Clone, Debug, Deserialize, Queryable, Insertable)]
+#[derive(Clone, Debug, Serialize, Deserialize, Queryable, Insertable)]
 #[table_name = "ratings"]
 pub struct RatingEntry {
     #[serde(rename(deserialize = "userId"))]
@@ -40,7 +40,7 @@ pub struct RatingEntry {
 /// Tag applied to one movie by one user.
 ///
 /// Corresponds to each row of tags.csv in the [Movielens Dataset](https://grouplens.org/datasets/movielens/).
-#[derive(Clone, Debug, Deserialize, Queryable, Insertable)]
+#[derive(Clone, Debug, Serialize, Deserialize, Queryable, Insertable)]
 #[table_name = "tags"]
 pub struct TagEntry {
     #[serde(rename(deserialize = "userId"))]
@@ -55,7 +55,7 @@ pub struct TagEntry {
 /// Identifiers that can be used to link to other sources of movie data
 ///
 /// Corresponds to each row of links.csv in the [Movielens Dataset](https://grouplens.org/datasets/movielens/).
-#[derive(Clone, Debug, Deserialize, Queryable, Insertable)]
+#[derive(Clone, Debug, Serialize, Deserialize, Queryable, Insertable)]
 pub struct Link {
     /// Identifier used by <https://movielens.org>.
     #[serde(rename(deserialize = "movieId"))]
