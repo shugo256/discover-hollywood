@@ -3,10 +3,13 @@ use derive_more::Display;
 use serde_json::json;
 use thiserror::Error;
 
-pub(crate) type UseCaseResult<T> = Result<T, UseCaseError>;
+pub type UseCaseResult<T> = Result<T, UseCaseError>;
 
+/// Error type for the UseCase logic.
+///
+/// Each variants will be mapped into a HTTP status code.
 #[derive(Clone, Debug, Display, Error, PartialEq)]
-pub(crate) enum UseCaseError {
+pub enum UseCaseError {
     #[display(fmt = "ResourceNotFound: {}", _0)]
     ResourceNotFound(String),
 
