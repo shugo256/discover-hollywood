@@ -1,9 +1,28 @@
 use derive_more::From;
+use diesel::Queryable;
 use discover_hollywood_models::Movie;
 use serde::{Deserialize, Deserializer, Serialize};
 
+// TODO: これmodelsに移動しないと、frontから使えなそう
+/// Struct that contains verbose information on a [`Movie`].
+#[derive(Clone, Debug, Serialize, Queryable)]
+pub struct MovieInfo {
+    /// Basic information on the movie.
+    ///
+    /// This field will be flattend by [`serde`] when its converted into json body.
+    /// See https://serde.rs/attr-flatten.html for details.
+    #[serde(flatten)]
+    movie: Movie,
+
+    /// Average rating by users.
+    rating: f64,
+
+    /// The number of users who rated this movie.
+    rated_user_num: i32,
+}
+
 /// Query struct to search for [`Movie`].
-#[derive(Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub struct SearchQuery {
     /// Query text for fuzzy string searching.
     ///
@@ -21,7 +40,7 @@ where
     Ok(list.split('+').map(String::from).collect())
 }
 
-#[derive(Serialize, From)]
+#[derive(Clone, Debug, Serialize, From)]
 pub struct SearchResponse {
-    pub movies: Vec<Movie>,
+    pub movies: Vec<MovieInfo>,
 }
