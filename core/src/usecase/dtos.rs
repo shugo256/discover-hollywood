@@ -1,47 +1,37 @@
 use derive_more::From;
-use diesel::Queryable;
-use serde::{Deserialize, Deserializer, Serialize};
+use serde::{Deserialize, Serialize};
 
 use crate::models::Movie;
 
-// TODO: これmodelsに移動しないと、frontから使えなそう
+#[cfg(feature = "adapters")]
+use diesel::Queryable;
+
 /// Struct that contains verbose information on a [`Movie`].
-#[derive(Clone, Debug, Serialize, Queryable)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "adapters", derive(Queryable))]
 pub struct MovieInfo {
     /// Basic information on the movie.
     ///
     /// This field will be flattend by [`serde`] when its converted into json body.
     /// See https://serde.rs/attr-flatten.html for details.
     #[serde(flatten)]
-    movie: Movie,
+    pub movie: Movie,
 
     /// Average rating by users.
-    rating: f64,
+    pub rating: f64,
 
     /// The number of users who rated this movie.
-    rated_user_num: i32,
+    pub rated_user_num: i32,
 }
 
 /// Query struct to search for [`Movie`].
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct SearchQuery {
     /// Query text for fuzzy string searching.
-    ///
-    /// This field is converted from a plus-separeted list in the query param
-    /// using [`plus_separeted_list_to_vec`].
-    #[serde(deserialize_with = "plus_separeted_list_to_vec")]
-    pub text: Vec<String>,
+    pub text: String,
 }
 
-fn plus_separeted_list_to_vec<'de, D>(deserializer: D) -> Result<Vec<String>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let list: String = Deserialize::deserialize(deserializer)?;
-    Ok(list.split('+').map(String::from).collect())
-}
-
-#[derive(Clone, Debug, Serialize, From)]
+#[derive(Clone, Debug, Serialize, Deserialize, From)]
 pub struct SearchResponse {
     pub movies: Vec<MovieInfo>,
 }

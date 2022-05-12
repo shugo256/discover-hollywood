@@ -2,24 +2,35 @@
 pub mod dtos;
 
 /// Error & Result type definition for the usecase.
+
+#[cfg(feature = "adapters")]
 pub(crate) mod error;
 
-use diesel::prelude::*;
-use diesel::r2d2::{ConnectionManager, Pool};
+#[cfg(feature = "adapters")]
+use {
+    self::{
+        dtos::{MovieInfo, SearchQuery, SearchResponse},
+        error::UseCaseResult,
+    },
+    crate::schema::movies,
+    diesel::{
+        prelude::*,
+        r2d2::{ConnectionManager, Pool},
+    },
+};
 
-use self::dtos::{MovieInfo, SearchResponse};
-use self::{dtos::SearchQuery, error::UseCaseResult};
-use crate::schema::movies;
-
+#[cfg(feature = "adapters")]
 type SqliteConnectionPool = Pool<ConnectionManager<SqliteConnection>>;
 
 /// Main logic struct of the app.
 ///
 /// Responsible for converting request dtos into response dtos.
+#[cfg(feature = "adapters")]
 pub struct UseCase {
     pool: SqliteConnectionPool,
 }
 
+#[cfg(feature = "adapters")]
 impl UseCase {
     /// Initialize a Connection Pool to the DB and build a new UseCase instance.
     pub fn new() -> anyhow::Result<Self> {
@@ -44,7 +55,7 @@ impl UseCase {
     /// Called by [`discover_hollywood_server::handlers::search_movie`].
     pub fn search_movie(&self, query: SearchQuery) -> UseCaseResult<SearchResponse> {
         let conn = self.pool.get()?;
-        let sql_like_query = format!("%{}%", query.text.join("%"));
+        let sql_like_query = format!("%{}%", query.text.replace(" ", "%"));
 
         let results = diesel_queries::rating_joined_query()
             .filter(movies::title.like(sql_like_query))
@@ -55,6 +66,7 @@ impl UseCase {
 }
 
 /// Collection of complecated Diesel queries.
+#[cfg(feature = "adapters")]
 mod diesel_queries {
     use crate::schema::{movies, ratings};
     use diesel::backend::Backend;

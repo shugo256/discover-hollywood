@@ -1,12 +1,17 @@
-use crate::schema::*;
-use diesel::{Insertable, Queryable};
 use serde::{Deserialize, Serialize};
+
+#[cfg(feature = "adapters")]
+use {
+    crate::schema::*,
+    diesel::{Insertable, Queryable},
+};
 
 /// Domain model of movie information
 ///
 /// Corresponds to [`movies`] table.
-#[derive(Clone, Debug, Serialize, Deserialize, Queryable, Insertable)]
-#[table_name = "movies"]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "adapters", derive(Queryable, Insertable))]
+#[cfg_attr(feature = "adapters", table_name = "movies")]
 pub struct Movie {
     pub id: String,
     pub title: String,
@@ -21,8 +26,9 @@ pub struct Movie {
 /// Domain model of rating of one movie by one user.
 ///
 /// Corresponds to [`ratings`] table.
-#[derive(Clone, Debug, Serialize, Deserialize, Queryable, Insertable)]
-#[table_name = "ratings"]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "adapters", derive(Queryable, Insertable))]
+#[cfg_attr(feature = "adapters", table_name = "ratings")]
 pub struct Rating {
     #[serde(rename(deserialize = "userId"))]
     pub user_id: String,
@@ -37,8 +43,9 @@ pub struct Rating {
 /// Domain model of tag applied to one movie by one user.
 ///
 /// Corresponds to [`tags`] table.
-#[derive(Clone, Debug, Serialize, Deserialize, Queryable, Insertable)]
-#[table_name = "tags"]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "adapters", derive(Queryable, Insertable))]
+#[cfg_attr(feature = "adapters", table_name = "tags")]
 pub struct Tag {
     #[serde(rename(deserialize = "userId"))]
     pub user_id: String,
