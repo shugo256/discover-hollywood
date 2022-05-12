@@ -6,7 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [workspace]
-members = ["core", "dataset", "server"]
+members = ["client", "core", "dataset", "server"]
 
 [dependencies]
 actix-web = "4.0.1"

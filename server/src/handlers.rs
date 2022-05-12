@@ -2,7 +2,7 @@ use actix_web::{get, web, HttpResponse, Result};
 
 use discover_hollywood_core::usecase::{dtos::SearchQuery, UseCase};
 
-#[get("/{id}")]
+#[get("/movies/{id}")]
 pub(crate) async fn get_movie(
     id: web::Path<String>,
     usecase: web::Data<UseCase>,
@@ -11,7 +11,7 @@ pub(crate) async fn get_movie(
     Ok(HttpResponse::Ok().json(movie))
 }
 
-#[get("/search")]
+#[get("/movies/search")]
 pub(crate) async fn search_movie(
     query: web::Query<SearchQuery>,
     usecase: web::Data<UseCase>,
