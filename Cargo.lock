@@ -591,12 +591,14 @@ dependencies = [
  "actix-web",
  "anyhow",
  "csv",
+ "derive_more",
  "diesel",
  "diesel_migrations",
  "discover-hollywood-models",
  "futures",
  "itertools",
  "reqwest",
+ "serde",
  "zip",
 ]
 

@@ -1,16 +1,10 @@
 table! {
-    links (movie_id) {
-        movie_id -> Text,
-        imdb_id -> Text,
-        tmdb_id -> Text,
-    }
-}
-
-table! {
     movies (id) {
         id -> Text,
         title -> Text,
         genres -> Text,
+        imdb_id -> Text,
+        tmdb_id -> Text,
     }
 }
 
@@ -34,12 +28,10 @@ table! {
     }
 }
 
-joinable!(links -> movies (movie_id));
 joinable!(ratings -> movies (movie_id));
 joinable!(tags -> movies (movie_id));
 
 allow_tables_to_appear_in_same_query!(
-    links,
     movies,
     ratings,
     tags,

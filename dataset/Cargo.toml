@@ -10,10 +10,12 @@ description = "Logic to download and prepare the [Movielens Dataset](https://gro
 actix-web = "4.0.1"
 anyhow = { version = "1.0.57", features = ["backtrace"] }
 csv = "1.1.6"
+derive_more = "0.99.17"
 diesel = { version = "1.4.8", features = ["sqlite"] }
 diesel_migrations = { version = "1.4.0", features = ["sqlite"] }
 discover-hollywood-models = { version = "0.1.0", path = "../models" }
 futures = "0.3.21"
 itertools = "0.10.3"
 reqwest = "0.11.10"
+serde = { version = "1.0.137", features = ["derive"] }
 zip = "0.6.2"
