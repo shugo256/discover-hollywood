@@ -9,7 +9,7 @@ use {
 /// Domain model of movie information
 ///
 /// Corresponds to [`movies`] table.
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[cfg_attr(feature = "adapters", derive(Queryable, Insertable))]
 #[cfg_attr(feature = "adapters", table_name = "movies")]
 pub struct Movie {

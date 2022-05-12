@@ -7,7 +7,7 @@ use crate::models::Movie;
 use diesel::Queryable;
 
 /// Struct that contains verbose information on a [`Movie`].
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[cfg_attr(feature = "adapters", derive(Queryable))]
 pub struct MovieInfo {
     /// Basic information on the movie.
