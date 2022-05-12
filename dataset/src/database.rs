@@ -1,32 +1,24 @@
 use anyhow::Ok;
 use diesel::{Connection, Insertable, QueryDsl, RunQueryDsl, SqliteConnection};
-use discover_hollywood_models::{Link, Movie, RatingEntry, TagEntry};
-use itertools::Itertools;
+use discover_hollywood_models::{schema, Movie, Rating, Tag};
 
-use crate::consts::{data_dir_path, sqlite_file_path};
+use crate::consts::sqlite_file_path;
 
-macro_rules! insert_csv_into_table {
-    ($table_name:ident, $model_type:ty, $conn:expr) => {
-        let csv_name = format!("{}.csv", stringify!($table_name));
-        let mut reader = csv::Reader::from_path(data_dir_path().join(csv_name))?;
-        let models: Vec<$model_type> = reader
-            .deserialize::<$model_type>()
-            .into_iter()
-            .try_collect()?;
-        models
-            .insert_into(discover_hollywood_models::schema::$table_name::table)
-            .execute($conn)?;
-    };
-}
-
-pub(crate) fn load_dataset_to_sqlite() -> anyhow::Result<()> {
+pub(crate) fn load_dataset_to_sqlite(
+    movies: Vec<Movie>,
+    ratings: Vec<Rating>,
+    tags: Vec<Tag>,
+) -> anyhow::Result<()> {
     let mut conn = SqliteConnection::establish(sqlite_file_path().to_str().unwrap())?;
     diesel_migrations::run_pending_migrations(&mut conn)?;
 
-    insert_csv_into_table!(movies, Movie, &mut conn);
-    insert_csv_into_table!(ratings, RatingEntry, &mut conn);
-    insert_csv_into_table!(tags, TagEntry, &mut conn);
-    insert_csv_into_table!(links, Link, &mut conn);
+    movies
+        .insert_into(schema::movies::table)
+        .execute(&mut conn)?;
+    ratings
+        .insert_into(schema::ratings::table)
+        .execute(&mut conn)?;
+    tags.insert_into(schema::tags::table).execute(&mut conn)?;
 
     Ok(())
 }
@@ -52,7 +44,6 @@ pub(crate) fn assert_db_contents() -> anyhow::Result<()> {
     check_table_count!(movies, 9742, &mut conn);
     check_table_count!(ratings, 100836, &mut conn);
     check_table_count!(tags, 3683, &mut conn);
-    check_table_count!(links, 9742, &mut conn);
 
     Ok(())
 }
