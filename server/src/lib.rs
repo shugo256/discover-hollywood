@@ -6,9 +6,13 @@
 /// 1. And then converting UseCase response DTOs into Actix Web response objects.
 mod handlers;
 
-use actix_files::Files;
-use actix_web::{middleware::Logger, web, App, HttpServer};
+use actix_files::{Files, NamedFile};
+use actix_web::{middleware::Logger, web, App, HttpServer, Result};
 use discover_hollywood_core::usecase::UseCase;
+
+async fn index() -> Result<NamedFile> {
+    Ok(NamedFile::open("./client/dist/index.html")?)
+}
 
 /// Start the server with Actix Web.
 pub async fn start() -> anyhow::Result<()> {
@@ -21,6 +25,7 @@ pub async fn start() -> anyhow::Result<()> {
             .service(handlers::search_movie)
             .service(handlers::get_movie)
             .service(Files::new("/", "./client/dist/").index_file("index.html"))
+            .default_service(web::route().to(index))
     })
     .bind("0.0.0.0:8080")?
     .run()
