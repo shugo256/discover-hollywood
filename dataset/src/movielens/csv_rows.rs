@@ -1,5 +1,5 @@
 use derive_more::From;
-use discover_hollywood_models::{Movie, Rating, Tag};
+use discover_hollywood_core::models::{Movie, Rating, Tag};
 use serde::{Deserialize, Serialize};
 
 /// Movie Information

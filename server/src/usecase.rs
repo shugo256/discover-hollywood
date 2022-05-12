@@ -3,7 +3,7 @@ pub(crate) mod error;
 
 use diesel::prelude::*;
 use diesel::r2d2::{ConnectionManager, Pool};
-use discover_hollywood_models::schema::movies;
+use discover_hollywood_core::schema::movies;
 
 use self::dtos::{MovieInfo, SearchResponse};
 use self::{dtos::SearchQuery, error::UseCaseResult};
@@ -61,7 +61,7 @@ mod diesel_queries {
     use diesel::query_builder::BoxedSelectStatement;
     use diesel::query_source::joins::{Inner, Join, JoinOn};
     use diesel::sql_types::{Double, Integer};
-    use discover_hollywood_models::schema::{movies, ratings};
+    use discover_hollywood_core::schema::{movies, ratings};
 
     type RatingJoinedType = (movies::SqlType, Double, Integer);
     type RatingJoinedQueryStatement = JoinOn<

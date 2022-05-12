@@ -1,8 +1,8 @@
 [package]
-name = "discover-hollywood-models"
+name = "discover-hollywood-core"
 version = "0.1.0"
 edition = "2021"
-description = "Domain models and Diesel schema definitions of the application."
+description = "Domain models, Diesel schema definitions and usecase logic of the application."
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

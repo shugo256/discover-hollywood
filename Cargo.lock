@@ -585,6 +585,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "discover-hollywood-core"
+version = "0.1.0"
+dependencies = [
+ "diesel",
+ "serde",
+]
+
+[[package]]
 name = "discover-hollywood-dataset"
 version = "0.1.0"
 dependencies = [
@@ -594,20 +602,12 @@ dependencies = [
  "derive_more",
  "diesel",
  "diesel_migrations",
- "discover-hollywood-models",
+ "discover-hollywood-core",
  "futures",
  "itertools",
  "reqwest",
  "serde",
  "zip",
-]
-
-[[package]]
-name = "discover-hollywood-models"
-version = "0.1.0"
-dependencies = [
- "diesel",
- "serde",
 ]
 
 [[package]]
@@ -618,7 +618,7 @@ dependencies = [
  "anyhow",
  "derive_more",
  "diesel",
- "discover-hollywood-models",
+ "discover-hollywood-core",
  "r2d2",
  "serde",
  "serde_json",

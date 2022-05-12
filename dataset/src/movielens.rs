@@ -3,7 +3,7 @@ mod csv_rows;
 
 use std::{fs::File, io, path::PathBuf};
 
-use discover_hollywood_models::{Movie, Rating, Tag};
+use discover_hollywood_core::models::{Movie, Rating, Tag};
 use futures::TryFutureExt;
 use itertools::{izip, Itertools};
 use serde::Deserialize;

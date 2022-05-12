@@ -1,6 +1,6 @@
 use derive_more::From;
 use diesel::Queryable;
-use discover_hollywood_models::Movie;
+use discover_hollywood_core::models::Movie;
 use serde::{Deserialize, Deserializer, Serialize};
 
 // TODO: これmodelsに移動しないと、frontから使えなそう
