@@ -4,9 +4,24 @@
 /// 1. Mapping Actix Web request objects into UseCase request DTOs
 /// 1. Calling the UseCase using the DTOs.
 /// 1. And then converting UseCase response DTOs into Actix Web response objects.
-pub mod handlers;
+mod handlers;
 
-/// Main logic of the application.
-///
-/// This module includes interaction with db, request/response DTOs and error-handling
-pub mod usecase;
+use actix_web::{middleware::Logger, web, App, HttpServer};
+use discover_hollywood_core::usecase::UseCase;
+
+/// Start the server with Actix Web.
+pub async fn start() -> anyhow::Result<()> {
+    let usecase = web::Data::new(UseCase::new()?);
+
+    HttpServer::new(move || {
+        App::new()
+            .wrap(Logger::new("%a \"%r\" %s (%T s)"))
+            .app_data(usecase.clone())
+            .service(handlers::search_movie)
+            .service(handlers::get_movie)
+    })
+    .bind("0.0.0.0:8080")?
+    .run()
+    .await?;
+    Ok(())
+}

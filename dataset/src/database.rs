@@ -1,6 +1,9 @@
 use anyhow::Ok;
 use diesel::{Connection, Insertable, QueryDsl, RunQueryDsl, SqliteConnection};
-use discover_hollywood_models::{schema, Movie, Rating, Tag};
+use discover_hollywood_core::{
+    models::{Movie, Rating, Tag},
+    schema,
+};
 
 use crate::consts::sqlite_file_path;
 
@@ -25,7 +28,7 @@ pub(crate) fn load_dataset_to_sqlite(
 
 macro_rules! check_table_count {
     ($table_name:ident, $target_count:expr, $conn:expr) => {
-        let count = discover_hollywood_models::schema::$table_name::table
+        let count = discover_hollywood_core::schema::$table_name::table
             .count()
             .first::<i64>($conn)?;
         anyhow::ensure!(

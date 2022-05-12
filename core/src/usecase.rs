@@ -1,12 +1,15 @@
-pub(crate) mod dtos;
+/// Data Transfer Objects for HTTP requests/responses.
+pub mod dtos;
+
+/// Error & Result type definition for the usecase.
 pub(crate) mod error;
 
 use diesel::prelude::*;
 use diesel::r2d2::{ConnectionManager, Pool};
-use discover_hollywood_models::schema::movies;
 
 use self::dtos::{MovieInfo, SearchResponse};
 use self::{dtos::SearchQuery, error::UseCaseResult};
+use crate::schema::movies;
 
 type SqliteConnectionPool = Pool<ConnectionManager<SqliteConnection>>;
 
@@ -27,8 +30,8 @@ impl UseCase {
 
     /// Get a [`Movie`] by id.
     ///
-    /// Called by [`crate::handlers::get_movie`].
-    pub(crate) fn get_movie(&self, movie_id: &str) -> UseCaseResult<MovieInfo> {
+    /// Called by [`discover_hollywood_server::handlers::get_movie`].
+    pub fn get_movie(&self, movie_id: &str) -> UseCaseResult<MovieInfo> {
         let conn = self.pool.get()?;
         let movie = diesel_queries::rating_joined_query()
             .filter(movies::id.eq(movie_id))
@@ -38,8 +41,8 @@ impl UseCase {
 
     /// Get a list of [`Movie`]s that matches the [`SearchQuery`].
     ///
-    /// Called by [`crate::handlers::search_movie`].
-    pub(crate) fn search_movie(&self, query: SearchQuery) -> UseCaseResult<SearchResponse> {
+    /// Called by [`discover_hollywood_server::handlers::search_movie`].
+    pub fn search_movie(&self, query: SearchQuery) -> UseCaseResult<SearchResponse> {
         let conn = self.pool.get()?;
         let sql_like_query = format!("%{}%", query.text.join("%"));
 
@@ -53,6 +56,7 @@ impl UseCase {
 
 /// Collection of complecated Diesel queries.
 mod diesel_queries {
+    use crate::schema::{movies, ratings};
     use diesel::backend::Backend;
     use diesel::dsl::sql;
     use diesel::expression::nullable::Nullable;
@@ -61,7 +65,6 @@ mod diesel_queries {
     use diesel::query_builder::BoxedSelectStatement;
     use diesel::query_source::joins::{Inner, Join, JoinOn};
     use diesel::sql_types::{Double, Integer};
-    use discover_hollywood_models::schema::{movies, ratings};
 
     type RatingJoinedType = (movies::SqlType, Double, Integer);
     type RatingJoinedQueryStatement = JoinOn<

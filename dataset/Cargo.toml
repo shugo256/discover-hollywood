@@ -13,7 +13,7 @@ csv = "1.1.6"
 derive_more = "0.99.17"
 diesel = { version = "1.4.8", features = ["sqlite"] }
 diesel_migrations = { version = "1.4.0", features = ["sqlite"] }
-discover-hollywood-models = { version = "0.1.0", path = "../models" }
+discover-hollywood-core = { version = "0.1.0", path = "../core" }
 futures = "0.3.21"
 itertools = "0.10.3"
 reqwest = "0.11.10"
