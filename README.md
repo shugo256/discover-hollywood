@@ -7,7 +7,7 @@ Both the frontend and the backend of the app is implemented in Rust using the fo
 * [Yew](https://yew.rs): Wasm framework for building client web apps, inspired by React.js and JSX.
 
 ## Run
-1. Add a `.env` file to the root of this project which contains your tbdb api key as `TMDB_V3_API_KEY`.
+1. Add a `.env` file to the root of this project which contains your TMDB api key as `TMDB_V3_API_KEY`.
     ```
     TMDB_V3_API_KEY={YOUR_KEY}
     ```
@@ -19,7 +19,7 @@ Both the frontend and the backend of the app is implemented in Rust using the fo
     ```
     **NOTE**: The building process can take ~10 minutes.\
 
-1. Go to http://localhost:8080 and starat discovering!
+1. Go to http://localhost:8080 and start discovering!
 
 ## Documentation
 The project contains a [cargo doc](https://doc.rust-lang.org/cargo/commands/cargo-doc.html).
@@ -31,18 +31,18 @@ API documentation of the backend server will be at the each handler methods' pag
 The project consists of 5 crates (= rust packages) and each of them is documented.
 
 ### `discover-hollywood` (module path: /)
-[local document link](http://localhost:8080/docs/discover_hollywood/index.html)
+[localhost document link](http://localhost:8080/docs/discover_hollywood/index.html)
 
 Entrypoint module to compose other crates and start the application.
 
 ### `discover-hollywood-core` (module path: /core)
-[local document link](http://localhost:8080/docs/discover_hollywood_core/index.html)
+[localhost document link](http://localhost:8080/docs/discover_hollywood_core/index.html)
 
 Domain models, usecase logics, and DB schema definition of the application.
 By writing the frontend and backend in the same language, these core logics can be shared and reused on both sides through this package.
 
 ### `discover-hollywood-dataset` (module path: /dataset)
-[local document link](http://localhost:8080/docs/discover_hollywood_dataset/index.html)
+[localhost document link](http://localhost:8080/docs/discover_hollywood_dataset/index.html)
 
 Movielens dataset loader.
 
@@ -52,7 +52,7 @@ local document link
 Client WebAssembly application.
 
 ### `discover-hollywood-server` (module path: /server)
-[local document link](http://localhost:8080/docs/discover_hollywood_server/index.html)
+[localhost document link](http://localhost:8080/docs/discover_hollywood_server/index.html)
 
 Backend server application.
 
