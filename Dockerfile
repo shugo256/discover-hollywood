@@ -13,6 +13,9 @@ RUN trunk build --release
 # Build server app.
 RUN cargo build --release
 
+# Build cargo documentation.
+RUN  cargo doc  --all --no-deps --document-private-items
+
 RUN ls
 
 ENTRYPOINT ["/app/target/release/discover-hollywood"]

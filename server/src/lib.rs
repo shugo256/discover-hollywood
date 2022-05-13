@@ -24,6 +24,7 @@ pub async fn start() -> anyhow::Result<()> {
             .app_data(usecase.clone())
             .service(handlers::search_movie)
             .service(handlers::get_movie)
+            .service(Files::new("/docs", "./target/doc/"))
             .service(Files::new("/", "./client/dist/").index_file("index.html"))
             .default_service(web::route().to(index))
     })
