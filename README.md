@@ -30,16 +30,30 @@ API documentation of the backend server will be at the each handler methods' pag
 ## Project Structure
 The project consists of 5 crates (= rust packages) and each of them is documented.
 
-### [`discover-hollywood`](http://localhost:8080/docs/discover_hollywood/index.html) (module path: /)
+### `discover-hollywood` (module path: /)
+[local document link](http://localhost:8080/docs/discover_hollywood/index.html)
+
 Entrypoint module to compose other crates and start the application.
-### [`discover-hollywood-core`](http://localhost:8080/docs/discover_hollywood_core/index.html) (module path: /core)
+
+### `discover-hollywood-core` (module path: /core)
+[local document link](http://localhost:8080/docs/discover_hollywood_core/index.html)
+
 Domain models, usecase logics, and DB schema definition of the application.
 By writing the frontend and backend in the same language, these core logics can be shared and reused on both sides through this package.
-### [`discover-hollywood-dataset`](http://localhost:8080/docs/discover_hollywood_dataset/index.html) (module path: /dataset)
+
+### `discover-hollywood-dataset` (module path: /dataset)
+[local document link](http://localhost:8080/docs/discover_hollywood_dataset/index.html)
+
 Movielens dataset loader.
-### [`discover-hollywood-client`](http://localhost:8080/docs/discover_hollywood_client/index.html) (module path: /client)
+
+### `discover-hollywood-client` (module path: /client)
+local document link
+
 Client WebAssembly application.
-### [`discover-hollywood-server`](http://localhost:8080/docs/discover_hollywood_server/index.html) (module path: /server)
+
+### `discover-hollywood-server` (module path: /server)
+[local document link](http://localhost:8080/docs/discover_hollywood_server/index.html)
+
 Backend server application.
 
 ## TODOs
