@@ -20,13 +20,15 @@ pub(crate) fn movie_card(
     }: &MovieCardProps,
 ) -> Html {
     html! {
-        <a href={format!("http://localhost:8080/movies/{}", id)} style="color: inherit; text-decoration: none; border-style: solid; border-color: silver; height: 200px; width: 300px; display:inline-block;">
-        <h3>{title}</h3>
-            <div>
-                {"Rating: "}<b>{format!("{:.2} ({} votes)", rating, rated_user_num)}</b>
-            </div>
-            <div>
-                {"Genres: "}<b>{genres.replace("|", ", ")}</b>
+        <a href={format!("http://localhost:8080/{}", id)} style="color: inherit; text-decoration: none; border-style: solid; border-color: silver; width: 200px; margin: 1px; padding: .8em;">
+            <div style="width: 100%; height: 100%;">
+                <h3>{title}</h3>
+                <p>
+                    {"Rating: "}<b>{format!("{:.2} ({} votes)", rating, rated_user_num)}</b>
+                </p>
+                <p>
+                    {"Genres: "}<b>{genres.replace("|", ", ")}</b>
+                </p>
             </div>
         </a>
     }

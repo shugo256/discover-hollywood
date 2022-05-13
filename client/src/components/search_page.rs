@@ -56,6 +56,7 @@ pub(crate) fn search_page() -> Html {
                 <input type="search" ref={input_ref} {onchange} />
                 {click_for_details_msg}
             </div>
+            <div style="display: flex; flex-flow: row wrap; justify-content: start; align-items: stretch; text-align: left; width 90%;">
             {
                 result.iter().map(|movie| { html! {
                     <MovieCard
@@ -67,6 +68,7 @@ pub(crate) fn search_page() -> Html {
                     />
                 }}).collect::<Html>()
             }
+            </div>
         </>
     }
 }
