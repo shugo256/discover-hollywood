@@ -1,0 +1,40 @@
+# Discover Hollywood
+
+Movie finder application based on the MovieLens dataset.
+
+Both the frontend and the backend of the app is implemented in Rust using the following crates:
+* [Actix-Web](https://actix.rs): Efficient modern web framework for rust.
+* [Yew](https://yew.rs): Wasm framework for building client web apps, inspired by React.js and JSX.
+
+## Run
+1. Add a `.env` file to the root of this project which contains your tbdb api key as `TMDB_V3_API_KEY`.
+    ```
+    TMDB_V3_API_KEY={YOUR_KEY}
+    ```
+    **NOTE**: Building the project without `TMDB_V3_API_KEY` will result in a compilation error.
+
+1. Start the docker service.
+    ```bash
+    docker-compose up --build app
+    ```
+    **NOTE**: The building process can take ~10 minutes.\
+
+1. Go to http://localhost:8080 and starat discovering!
+
+## Documentation
+The project contains a [cargo doc](https://doc.rust-lang.org/cargo/commands/cargo-doc.html) and hosts it at http://localhost:8080/docs/discover_hollywood/index.html.
+
+## Project Structure
+The project consists of 5 crates (= rust packages) and each of them is documented.
+
+#### [`discover-hollywood`](http://localhost:8080/docs/discover_hollywood/index.html) (module path: /)
+Entrypoint module to compose other crates and start the application.
+#### [`discover-hollywood-core`](http://localhost:8080/docs/discover_hollywood-core/index.html) (module path: /core/): 
+Domain models, usecase logics, and DB schema definition of the application.
+By writing the frontend and backend in the same language, these core logics can be shared and reused on both sides through this package.
+#### [`discover-hollywood-dataset`](http://localhost:8080/docs/discover_hollywood_dataset/index.html) (module path: /dataset/)
+Movielens dataset loader.
+#### [`discover-hollywood-client`](http://localhost:8080/docs/discover_hollywood_client/index.html) (module path: /client/)
+Client WebAssembly application.
+#### [`discover-hollywood-server`](http://localhost:8080/docs/discover_hollywood_server/index.html) (module path: /server/)
+Backend server application.
