@@ -16,8 +16,10 @@ mod search_page;
 /// Enum that defines the path to component mapping.
 #[derive(Clone, Debug, PartialEq, Routable)]
 enum AppRoute {
+    /// `/` : Movie search page ([`search_page`]).
     #[at("/")]
     TopPage,
+    /// `/:id` : Information page for each movie.  ([`movie_page`]).
     #[at("/:id")]
     MoviePage { id: String },
 }

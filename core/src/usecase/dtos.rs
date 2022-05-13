@@ -13,7 +13,7 @@ pub struct MovieInfo {
     /// Basic information on the movie.
     ///
     /// This field will be flattend by [`serde`] when its converted into json body.
-    /// See https://serde.rs/attr-flatten.html for details.
+    /// See <https://serde.rs/attr-flatten.html> for details.
     #[serde(flatten)]
     pub movie: Movie,
 
@@ -27,7 +27,9 @@ pub struct MovieInfo {
 /// Query struct to search for [`Movie`].
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct SearchQuery {
-    /// Query text for fuzzy string searching.
+    /// Query text for title search.
+    ///
+    /// A space-separated list of this field is used to perform an ambiguous search to the movie titles.
     pub text: String,
 }
 

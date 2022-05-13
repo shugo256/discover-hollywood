@@ -10,6 +10,7 @@ use actix_files::{Files, NamedFile};
 use actix_web::{middleware::Logger, web, App, HttpServer, Result};
 use discover_hollywood_core::usecase::UseCase;
 
+/// Handler to host the client app.
 async fn index() -> Result<NamedFile> {
     Ok(NamedFile::open("./client/dist/index.html")?)
 }
