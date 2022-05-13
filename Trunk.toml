@@ -1,0 +1,12 @@
+# An example Trunk.toml with all possible fields along with their defaults.
+[build]
+# The index HTML file to drive the bundling process.
+target = "client/index.html"
+# Build in release mode.
+release = false
+# The output dir for all final assets.
+dist = "client/dist"
+
+[watch]
+# Paths to watch. The `build.target`'s parent folder is watched by default.
+watch = ["client", "core"]
