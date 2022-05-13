@@ -1,12 +1,16 @@
 use yew::{function_component, html, Html};
 use yew_router::{BrowserRouter, Routable, Switch};
 
+use self::movie_page::MoviePage;
 use self::search_page::SearchPage;
 
 /// Card component to list up movies.
 mod movie_card;
 
-/// Movie search page. (= Top page "/")
+/// Information page for each movie. `["/:id"]`
+mod movie_page;
+
+/// Movie search page. `["/"]`
 mod search_page;
 
 /// Enum that defines the path to component mapping.
@@ -23,12 +27,14 @@ impl AppRoute {
         log::info!("{:?}", route);
         match route {
             Self::TopPage => html! { <SearchPage/> },
-            Self::MoviePage { id } => html! { <b>{id}</b> },
+            Self::MoviePage { id } => html! { <MoviePage id={id.clone()} /> },
         }
     }
 }
 
 /// Entry point component for the client app.
+///
+/// Uses [`AppRoute`] for routiing.
 #[function_component(Main)]
 pub(crate) fn main() -> Html {
     html! {

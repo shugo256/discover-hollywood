@@ -639,6 +639,7 @@ dependencies = [
  "load-dotenv",
  "log",
  "reqwest",
+ "serde",
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "wasm-logger",
