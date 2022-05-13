@@ -41,3 +41,9 @@ Movielens dataset loader.
 Client WebAssembly application.
 ### [`discover-hollywood-server`](http://localhost:8080/docs/discover_hollywood_server/index.html) (module path: /server)
 Backend server application.
+
+## TODOs
+* Movie recommendation (Item to item recommendation using collaborative filtering).
+* Genre based search.
+* Add tests.
+* Improve presentation of the client app.
