@@ -17,7 +17,11 @@ Both the frontend and the backend of the app is implemented in Rust using the fo
     ```bash
     docker-compose up --build app
     ```
-    **NOTE**: The building process can take ~10 minutes.\
+    **NOTE**: For this, you need to install [Docker Compose](https://docs.docker.com/compose/install/) to your environment.
+    The version I used was `docker-compose version 1.29.2, build 5becea4c`, 
+    but I expect it will work with other versions.
+
+    **NOTE**: The building process can take ~10 minutes.
 
 1. Go to http://localhost:8080 and start discovering!
 
