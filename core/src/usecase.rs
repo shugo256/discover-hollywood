@@ -39,9 +39,7 @@ impl UseCase {
         Ok(Self { pool })
     }
 
-    /// Get a [`Movie`] by id.
-    ///
-    /// Called by [`discover_hollywood_server::handlers::get_movie`].
+    /// Get a [`MovieInfo`] by id.
     pub fn get_movie(&self, movie_id: &str) -> UseCaseResult<MovieInfo> {
         let conn = self.pool.get()?;
         let movie = diesel_queries::rating_joined_query()
@@ -50,9 +48,7 @@ impl UseCase {
         Ok(movie)
     }
 
-    /// Get a list of [`Movie`]s that matches the [`SearchQuery`].
-    ///
-    /// Called by [`discover_hollywood_server::handlers::search_movie`].
+    /// Get a list of [`MovieInfo`]s that matches the [`SearchQuery`].
     pub fn search_movie(&self, query: SearchQuery) -> UseCaseResult<SearchResponse> {
         let conn = self.pool.get()?;
         let sql_like_query = format!("%{}%", query.text.replace(" ", "%"));
